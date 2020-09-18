@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script/jquery.js"></script>
+    <title></title>
+<style>
+    body{
+        font-family: ARIAL;
+    }
+    ::-webkit-scrollbar {
+        width: 0px;
+    }
+    .div-loading{
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        background-color: #333333;
+        z-index: 10;
+        transition: 1s;
+    }
+    .div-body{
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 100%;
+        background-image: url('picture/wallpaper1.jpg');
+        background-color: #333333;
+        background-position: center;
+        background-size: cover;
+    }
+    .top-bar{
+        z-index: 2;
+    }
+    .div-background{
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color: rgba(0,0,0,0.5);
+        filter: blur(50px);
+    }
+    .right-page-btn{
+        cursor: pointer;
+        position: fixed;
+        top: 50%;
+        right: -20px;
+        transform: translate(-50%, -50%);
+    }
+    .left-page-btn{
+        cursor: pointer;
+        position: fixed;
+        top: 50%;
+        left: 20px;
+        transform: translate(-50%, -50%);
+    }
+    .img-page-btn{
+        width: 40px;
+        height: 40px;
+    }
+    .div-1{
+        position: fixed;
+        color: white;
+        text-align: center;
+        font-size: 60px;
+        margin: auto;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .div-1-pbar{
+        height: 10px;
+        width: 30px;
+        margin: 0px 0px 0px 5px;
+        animation: blink-bar 0.5s infinite;
+    }
+    @keyframes blink-bar{
+        0%{ background-color: transparent; }
+        50%{ background-color: rgb(255, 255, 255); }
+    }
+    .top-bar{
+        padding: 2px 4px;
+    }
+    .custom-select-lang{
+        position: relative;
+        display: inline-block;
+    }
+    .custom-select-lang-btn{
+        background-color: rgb(235, 231, 231);
+        color: black;
+        padding: 5px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .custom-select-lang-content{
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 120px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    .custom-select-lang-content a{
+        color: black;
+        padding: 4px 6px;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+    }
+    .custom-select-lang-content a span{
+        padding: 6px;
+    }
+    .custom-select-lang:hover .custom-select-lang-content{
+        display: block;
+    }
+    .custom-select-lang-content a:hover{
+        background-color: #949494;
+    }
+    .small-icon{
+        width: 20px;
+        height: 20px;
+        box-shadow: 0px 0px 5px #333333;
+        border-radius: 50%;
+    }
+    .div-2{
+        position: absolute;
+        color: white;
+        width: 500px;
+        margin: auto;
+        left: 0px;
+        right: 0px;
+        text-align: justify;
+        background-color: rgba(51, 51, 51, 0.7);
+        padding: 5px 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        text-align: justify;
+        font-size: 18px;
+    }
+
+    @media screen and (max-width: 510px){
+        .div-1{
+            font-size: 40px;
+        }
+        .div-2{
+            width: 90%;
+            font-size: 15px;
+        }
+    }
+</style>
+<script>
+    function check_screen_width_height(){
+        var height = window.innerHeight;
+        var width = window.innerWidth;
+
+        if(height < 500){
+            window.location.href = "error/";
+        }
+        if(width < 320){
+            window.location.href = "error/";
+        }
+    }
+
+    var check_page_interval = setInterval(function() {
+        if(document.readyState === 'complete') {
+            clearInterval(check_page_interval);
+            check_script();
+        }
+    }, 100);
+    function check_background_loaded(page){
+        $("#div-loading").css({"bottom":"100%"});
+        if(page == 1){
+            typeWriterdiv1_1();
+        }
+    }
+
+    function resize_video_background(){
+        var height = window.innerHeight;
+        var width = window.innerWidth;
+
+        if(height < width){
+            $("#div-background-video").css({"width":"100%"});
+        }
+        if(height > width){
+            $("#div-background-video").css({"height":"100%"});
+        }
+    }
+
+    function check_script(){
+        var total_page = "2";
+        var hash = window.location.hash;
+        hash = hash.split("#");
+
+        if(hash[1] != null){
+            var hash_length = hash[1].length;
+            var page_no = hash[1].charAt(hash_length-1);
+            page_no = Number(page_no);
+
+            if(page_no == 1){
+                $("#left-page-btn").fadeOut();
+            }else if(page_no == total_page){
+                $("#right-page-btn").fadeOut();
+            }
+        
+            $(document).ready(function(){
+                $.ajax({
+                    method:"get",
+                    url:"page/page"+page_no+".html",
+                    dataType:"text",
+                    error:function(){
+                        window.location.href = "error/page-not-found.html";
+                    },
+                    success:function(data){
+                        $("#div-output").html(data);
+                        check_background_loaded(page_no);
+                    }
+                });
+            });
+        }
+
+        if(hash[1] == null){
+            window.location.href = "#page1";
+        }
+    }
+
+    $(window).bind('hashchange', function() {
+        $("#div-loading").css({"bottom":"0%"});
+        setTimeout(function(){
+            window.location.reload();
+        }, 1000);
+    });
+
+    function change_page(act){
+        var hash = window.location.hash;
+        hash = hash.split("#");
+        var hash_length = hash[1].length;
+        var page_no = hash[1].charAt(hash_length-1);
+        page_no = Number(page_no);
+
+        if(act == "next"){
+            page_no = page_no+1;
+            current_page = page_no;
+            window.location.href = "#page"+page_no;
+        }else{
+            page_no = page_no-1;
+            current_page = page_no;
+            window.location.href = "#page"+page_no;
+        }
+    }
+
+</script>
+</head>
+<body onload="check_screen_width_height();resize_video_background();" onresize="check_screen_width_height();resize_video_background();">
+    <div id="div-loading" class="div-loading"></div>
+    <div class="div-body"></div>
+    <div id="div-background" class="div-background"></div>
+    <div id="div-output" class="div-output">
+        Loading......
+    </div>
+    <div id="right-page-btn" onclick="change_page('next');" class="right-page-btn"><img class="img-page-btn" src="icon/next.png"></div>
+    <div id="left-page-btn" onclick="change_page('previous');" class="left-page-btn"><img class="img-page-btn" src="icon/back.png"></div>
+    <div class="top-bar">
+        <div class="custom-select-lang" style="float: right;">
+            <button onclick="" class="custom-select-lang-btn"><img style="height: 20px;" src="icon/united-kingdom.png"> <img style="height: 15px;" src="icon/angle-down.png"></button>
+            <div class="custom-select-lang-content" style="right: 0;">
+                <a><img class='small-icon' src="icon/united-kingdom.png"><span>English</span></a>
+                <a href="error/page-not-found.html"><img class='small-icon' src="icon/indonesia.png"><span>Indonesia</span></a>
+                <a href="error/page-not-found.html"><img class='small-icon' src="icon/japan.png"><span>日本語</span></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

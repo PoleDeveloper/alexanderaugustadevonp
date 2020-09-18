@@ -1,0 +1,46 @@
+<div id="div-1" class="div-1">
+    <div style="display: inline-block;" id="div-1-txt"></div><div style="display: inline-block" class="div-1-pbar"></div>
+</div>
+<script>
+var div1i = 0;
+var div1_text_position = 0;
+var div1_type_stat = 0;
+var div1_txt = null;
+var div1_txta = 'Hi There....';
+
+function typeWriterdiv1_1() {
+    if ($("#div-1-txt").length > 0){
+        if (div1_type_stat == 0) {
+            document.getElementById("div-1-txt").innerHTML += div1_txta.charAt(div1i);
+            div1i++;
+            if(div1i > div1_txta.length){
+                div1_type_stat = 1;
+                setTimeout(typeWriterdiv1_1, 2000);
+            }else{
+                setTimeout(typeWriterdiv1_1, 80);
+            }
+        }else if(div1_type_stat == 1){
+            div1_txt = div1_txta.substr(0, div1i);
+            document.getElementById("div-1-txt").innerHTML = div1_txt;
+            div1i--;
+            if(div1i < 0){
+            if(div1_text_position == 0){
+                div1_txta = "I'M Alexander Augusta";
+                div1_text_position = 1;
+            }else if(div1_text_position == 1){
+                div1_txta = "A Junior Web Developer";
+                div1_text_position = 2;
+            }else{
+                div1_txta = "Hi There....";
+                div1_text_position = 0;
+            }
+                div1_type_stat = 0;
+                setTimeout(typeWriterdiv1_1, 1000);
+            }else{
+                setTimeout(typeWriterdiv1_1, 80);
+            }
+        }
+    }
+}
+
+</script>

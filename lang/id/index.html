@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../script/jquery.js"></script>
+    <title></title>
+<style>
+    body{
+        font-family: oswald;
+    }
+    .div-body{
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 100%;
+        background-image: url('../../picture/pexels-snapwire-32237.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+    .top-bar{
+        z-index: 2;
+    }
+    .div-output{
+        position: fixed;
+        top: 40px;
+        right: 0px;
+        left: 0px;
+        bottom: 40px;
+    }
+    .div-background{
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color: rgba(0,0,0,0.5);
+        filter: blur(50px);
+    }
+    .right-page-btn{
+        position: fixed;
+        top: 50%;
+        right: 0px;
+        transform: translate(-50%, -50%);
+    }
+    .left-page-btn{
+        position: fixed;
+        top: 50%;
+        left: 40px;
+        transform: translate(-50%, -50%);
+    }
+    .div-1{
+        position: fixed;
+        color: white;
+        text-align: center;
+        font-size: 60px;
+        margin: auto;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .div-1-pbar{
+        height: 10px;
+        width: 30px;
+        margin: 0px 0px 0px 5px;
+        animation: blink-bar 0.5s infinite;
+    }
+    @keyframes blink-bar{
+        0%{ background-color: transparent; }
+        50%{ background-color: rgb(255, 255, 255); }
+    }
+    .top-bar{
+        padding: 2px 4px;
+    }
+    .custom-select-lang{
+        position: relative;
+        display: inline-block;
+    }
+    .custom-select-lang-btn{
+        background-color: rgb(235, 231, 231);
+        color: black;
+        padding: 5px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .custom-select-lang-content{
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 120px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    .custom-select-lang-content a{
+        color: black;
+        padding: 4px 6px;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+    }
+    .custom-select-lang-content a span{
+        padding: 6px;
+    }
+    .custom-select-lang:hover .custom-select-lang-content{
+        display: block;
+    }
+    .custom-select-lang-content a:hover{
+        background-color: #949494;
+    }
+    .small-icon{
+        width: 20px;
+        height: 20px;
+        box-shadow: 0px 0px 5px #333333;
+        border-radius: 50%;
+    }
+</style>
+<script>
+    function check_screen_width_height(){
+        var height = window.innerHeight;
+        var width = window.innerWidth;
+
+        if(height < 500){
+            window.location.href = "../../error/";
+        }
+        if(width < 320){
+            window.location.href = "../../error/";
+        }
+    }
+
+    $(document).ready(function(){
+        check_script();
+    });
+    function check_script(){
+        var hash = window.location.hash;
+        hash = hash.split("#");
+        if(hash[1] == null){
+            
+        }else if(hash[1] == "page1"){
+            $(document).ready(function(){
+                $.ajax({
+                    method:"post",
+                    url:"../../page/lang/id/page1.html",
+                    cache:true,
+                    dataType:"text",
+                    success:function(data){
+                        $("#div-output").html(data);
+                        setTimeout(function(){
+                            typeWriterdiv1_1();
+                        }, 1000);
+                    }
+                });
+            });
+        }
+    }
+
+</script>
+</head>
+<body onload="check_screen_width_height();" onresize="check_screen_width_height();">
+    <div class="div-body"></div>
+    <div class="div-background"></div>
+    <div id="div-output" class="div-output">
+
+    </div>
+    <div class="right-page-btn"><img style="height: 40px;" src="../../icon/next.png"></div>
+    <div class="left-page-btn"><img style="height: 40px;" src="../../icon/back.png"></div>
+    <div class="top-bar">
+        <div class="custom-select-lang" style="float: right;">
+            <button onclick="" class="custom-select-lang-btn"><img style="height: 20px;" src="../../icon/indonesia.png"> <img style="height: 15px;" src="../../icon/angle-down.png"></button>
+            <div class="custom-select-lang-content" style="right: 0;">
+                <a href="../../"><img class='small-icon' src="../../icon/united-kingdom.png"><span>English</span></a>
+                <a><img class='small-icon' src="../../icon/indonesia.png"><span>Indonesia</span></a>
+                <a href="../../lang/jp/"><img class='small-icon' src="../../icon/japan.png"><span>日本語</span></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
